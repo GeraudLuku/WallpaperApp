@@ -1,6 +1,5 @@
 package com.geraud.wallpaperapp.api
 
-import androidx.lifecycle.LiveData
 import com.geraud.wallpaperapp.model.Category
 
 object PexelsRepository {
@@ -37,5 +36,7 @@ object PexelsRepository {
             )
         )
     }
+
+
 
 }

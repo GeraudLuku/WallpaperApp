@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitBuilder {
 
-    const val BASE_URL = "ulr.com"
+    const val BASE_URL = "https://api.pexels.com/v1/"
 
     val retrofitbuilder: Retrofit.Builder by lazy {
         Retrofit.Builder()
