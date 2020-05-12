@@ -16,7 +16,7 @@ object PexelsRepository {
 
     //return a list of categories
     fun getCategories(): List<Category> {
-        return listOf<Category>(
+        return listOf(
             Category(
                 "https://images.pexels.com/photos/545008/pexels-photo-545008.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
                 "Street Art"
@@ -72,12 +72,16 @@ object PexelsRepository {
                             }
 
                         } catch (e: Throwable) {
-                            Log.d(TAG, "Network Error")
+                            Log.d(TAG, e.message.toString())
                         }
                     }
                 }
             }
         }
+    }
+
+    fun cancelJobs() {
+        job?.cancel()
     }
 
 }
