@@ -1,9 +1,20 @@
 package com.geraud.wallpaperapp.api
 
+import android.util.Log
+import androidx.lifecycle.LiveData
 import com.geraud.wallpaperapp.model.Category
+import com.geraud.wallpaperapp.model.TrendingPhotos
+import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+
+private const val TAG = "PexelsRepo"
 
 object PexelsRepository {
 
+    var job: CompletableJob? = null
+
+    //return a list of categories
     fun getCategories(): List<Category> {
         return listOf<Category>(
             Category(
@@ -38,5 +49,35 @@ object PexelsRepository {
     }
 
 
+    //get a list of the trending photos
+    fun getTrendingPhotos(
+        page_number: Int
+    ): LiveData<TrendingPhotos> {
+        Log.d(TAG, "getting trending photos")
+        job = Job()
+        return object : LiveData<TrendingPhotos>() {
+            override fun onActive() { //when this method is called do something
+                super.onActive()
+                job?.let { theJob ->
+                    CoroutineScope(IO + theJob).launch {//get trending photos on the background thread
+                        try {
+                            val trendingPhotos: TrendingPhotos =
+                                RetrofitBuilder.pexelsApiService.getTrendingPhotos(page_number)
+
+                            withContext(Main) {
+                                //set value on the main thread
+                                value = trendingPhotos
+                                Log.d(TAG, trendingPhotos.toString())
+                                theJob.complete()
+                            }
+
+                        } catch (e: Throwable) {
+                            Log.d(TAG, "Network Error")
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 }
