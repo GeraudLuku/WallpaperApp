@@ -122,12 +122,21 @@
 
 
     <!-- Now we are going to add content for app good look below collapsing toolbar -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/trending_pictures_view"
+    <com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout
+        android:id="@+id/swipyrefreshlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:srl_direction="bottom">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trending_pictures_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp" />
+
+    </com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout>
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

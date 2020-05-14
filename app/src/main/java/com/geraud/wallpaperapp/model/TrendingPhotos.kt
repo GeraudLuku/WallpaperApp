@@ -11,5 +11,5 @@ data class TrendingPhotos(
     @SerializedName("per_page")
     var perPage: Int,
     @SerializedName("photos")
-    var photos: List<Photo>
+    var photos: ArrayList<Photo>
 )

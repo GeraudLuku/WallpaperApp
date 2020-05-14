@@ -11,7 +11,7 @@ import com.geraud.wallpaperapp.model.Photo
 import kotlinx.android.synthetic.main.photo_item.view.*
 
 class TrendingImagesAdapter(
-    var photos: List<Photo>,
+    var photos: ArrayList<Photo>,
     private val context: Context,
     private var clickListener: OnItemClickedListener
 ) :

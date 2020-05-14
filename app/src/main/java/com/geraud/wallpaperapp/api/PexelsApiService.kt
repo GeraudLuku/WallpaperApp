@@ -11,7 +11,7 @@ interface PexelsApiService {
 
     //get trending pictures
     @Headers("Authorization: $API_KEY")
-    @GET("curated?per_page=15")
+    @GET("curated?per_page=16")
     suspend fun getTrendingPhotos(
         @Query("page") page: Int
     ): TrendingPhotos

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -17,15 +18,19 @@ import com.geraud.wallpaperapp.adapter.TrendingImagesAdapter
 import com.geraud.wallpaperapp.model.Category
 import com.geraud.wallpaperapp.model.Photo
 import com.geraud.wallpaperapp.viewmodel.PexelsViewModel
+import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout
+import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection
 import kotlinx.android.synthetic.main.fragment_home.*
 
+private const val TAG = "HOME_FRAGMENT"
+private const val NUMBER_OF_COLUMNS = 2
 
 class HomeFragment : Fragment(), CategoriesAdapter.OnItemClickedListener,
-    TrendingImagesAdapter.OnItemClickedListener {
+    TrendingImagesAdapter.OnItemClickedListener, SwipyRefreshLayout.OnRefreshListener {
 
-    private var TAG = "HOME_FRAGMENT"
 
-    private var NUMBER_OF_COLUMBS = 2
+
+    private var page = 1
 
     private lateinit var pexelsViewModel: PexelsViewModel
 
@@ -40,6 +45,8 @@ class HomeFragment : Fragment(), CategoriesAdapter.OnItemClickedListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+
         //set toolbar
         if (activity is AppCompatActivity)
             (activity as AppCompatActivity).setSupportActionBar(app_bar)
@@ -48,6 +55,7 @@ class HomeFragment : Fragment(), CategoriesAdapter.OnItemClickedListener,
         //init view model
         pexelsViewModel = ViewModelProvider(this).get(PexelsViewModel::class.java)
 
+        swipyrefreshlayout.setOnRefreshListener(this)
 
         //categories recycler view instantiation
         category_recyclerview.adapter =
@@ -57,17 +65,21 @@ class HomeFragment : Fragment(), CategoriesAdapter.OnItemClickedListener,
         category_recyclerview.setHasFixedSize(true)
 
         //trending images recyclerview instantiation
-        val trendingPhotoAdapter = TrendingImagesAdapter(listOf(), view.context, this)
+        val trendingPhotoAdapter = TrendingImagesAdapter(arrayListOf(), view.context, this)
         trending_pictures_view.adapter = trendingPhotoAdapter
-        trending_pictures_view.layoutManager = GridLayoutManager(view.context, NUMBER_OF_COLUMBS)
+        trending_pictures_view.layoutManager = GridLayoutManager(view.context, NUMBER_OF_COLUMNS)
+
 
         //observe curated/trending photos
-        pexelsViewModel.setPageNumber(1)
+        pexelsViewModel.setPageNumber(page)
         pexelsViewModel.trendingPhotos.observe(viewLifecycleOwner, Observer { trendingPhotos ->
             Log.d(TAG, "trending photos been observed... { $trendingPhotos }")
 
+            if (swipyrefreshlayout.isRefreshing)
+                swipyrefreshlayout.isRefreshing = false
+
             //add photos to recyclerview
-            trendingPhotoAdapter.photos = trendingPhotos.photos
+            trendingPhotoAdapter.photos.addAll(trendingPhotos.photos)
             trendingPhotoAdapter.notifyDataSetChanged()
 
         })
@@ -79,6 +91,15 @@ class HomeFragment : Fragment(), CategoriesAdapter.OnItemClickedListener,
 
     override fun onTrendingImageCLicked(photo: Photo) {
         Log.d(TAG, "photo clicked { $photo }")
+    }
+
+    override fun onRefresh(direction: SwipyRefreshLayoutDirection?) {
+
+        Log.d(TAG, "bottom of list reached")
+
+        //query photos
+        page = page.inc()
+        pexelsViewModel.setPageNumber(page)
     }
 
 }
