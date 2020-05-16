@@ -2,14 +2,13 @@ package com.geraud.wallpaperapp.features
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.geraud.wallpaperapp.R
@@ -29,10 +28,10 @@ class HomeFragment : Fragment(), CategoriesAdapter.OnItemClickedListener,
     TrendingImagesAdapter.OnItemClickedListener, SwipyRefreshLayout.OnRefreshListener {
 
 
-
     private var page = 1
 
     private lateinit var pexelsViewModel: PexelsViewModel
+    private lateinit var navController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,6 +53,7 @@ class HomeFragment : Fragment(), CategoriesAdapter.OnItemClickedListener,
 
         //init view model
         pexelsViewModel = ViewModelProvider(this).get(PexelsViewModel::class.java)
+        navController = findNavController()
 
         swipyrefreshlayout.setOnRefreshListener(this)
 
@@ -75,12 +75,46 @@ class HomeFragment : Fragment(), CategoriesAdapter.OnItemClickedListener,
         pexelsViewModel.trendingPhotos.observe(viewLifecycleOwner, Observer { trendingPhotos ->
             Log.d(TAG, "trending photos been observed... { $trendingPhotos }")
 
-            if (swipyrefreshlayout.isRefreshing)
-                swipyrefreshlayout.isRefreshing = false
-
             //add photos to recyclerview
             trendingPhotoAdapter.photos.addAll(trendingPhotos.photos)
             trendingPhotoAdapter.notifyDataSetChanged()
+
+            if (swipyrefreshlayout.isRefreshing)
+                swipyrefreshlayout.isRefreshing = false
+
+        })
+
+        //if edit text clicked open search fragment and pass text
+        editText.setOnTouchListener(object : View.OnTouchListener {
+
+            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                val DRAWABLE_LEFT = 0
+                val DRAWABLE_TOP = 1
+                val DRAWABLE_RIGHT = 2
+                val DRAWABLE_BOTTOM = 3
+
+                if (event?.action == MotionEvent.ACTION_UP) {
+                    if (event.rawX >= (editText.right - editText.compoundDrawables[DRAWABLE_RIGHT].bounds.width())) {
+                        // your action here
+                        Log.d(TAG, "drawable right clicked")
+
+                        //edit text
+                        val query = editText.text.toString().trim()
+
+                        //get text in search bar and determine if it is empty
+                        if (query.length > 0) {
+                            //navigate to search fragment
+                            val action =
+                                HomeFragmentDirections.actionHomeFragment2ToSearchFragment(query)
+                            navController.navigate(action)
+                        }
+
+                        return true
+                    }
+                }
+
+                return false
+            }
 
         })
     }
