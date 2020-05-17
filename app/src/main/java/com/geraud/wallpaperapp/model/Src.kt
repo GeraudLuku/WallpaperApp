@@ -2,6 +2,7 @@ package com.geraud.wallpaperapp.model
 
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Src(
     @SerializedName("landscape")
@@ -20,4 +21,4 @@ data class Src(
     var small: String,
     @SerializedName("tiny")
     var tiny: String
-)
+): Serializable

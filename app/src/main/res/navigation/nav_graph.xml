@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_homeFragment2_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_homeFragment2_to_imageFragment"
+            app:destination="@id/imageFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -21,5 +24,17 @@
         <argument
             android:name="queryString"
             app:argType="string" />
+        <action
+            android:id="@+id/action_searchFragment_to_imageFragment"
+            app:destination="@id/imageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/imageFragment"
+        android:name="com.geraud.wallpaperapp.features.ImageFragment"
+        android:label="fragment_image"
+        tools:layout="@layout/fragment_image" >
+        <argument
+            android:name="src"
+            app:argType="com.geraud.wallpaperapp.model.Src" />
     </fragment>
 </navigation>

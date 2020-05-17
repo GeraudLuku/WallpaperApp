@@ -107,6 +107,7 @@ class HomeFragment : Fragment(), CategoriesAdapter.OnItemClickedListener,
                             val action =
                                 HomeFragmentDirections.actionHomeFragment2ToSearchFragment(query)
                             navController.navigate(action)
+                            editText.setText("")
                         }
 
                         return true
@@ -121,10 +122,16 @@ class HomeFragment : Fragment(), CategoriesAdapter.OnItemClickedListener,
 
     override fun onCategoryItemCLicked(category: Category) {
         Log.d(TAG, "category clicked - $category")
+        val action =
+            HomeFragmentDirections.actionHomeFragment2ToSearchFragment(category.name.trim())
+        navController.navigate(action)
     }
 
     override fun onTrendingImageCLicked(photo: Photo) {
         Log.d(TAG, "photo clicked { $photo }")
+
+        val action = HomeFragmentDirections.actionHomeFragment2ToImageFragment(photo.src)
+        navController.navigate(action)
     }
 
     override fun onRefresh(direction: SwipyRefreshLayoutDirection?) {

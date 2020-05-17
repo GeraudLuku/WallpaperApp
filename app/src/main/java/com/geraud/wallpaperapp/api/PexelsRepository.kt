@@ -3,6 +3,7 @@ package com.geraud.wallpaperapp.api
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.geraud.wallpaperapp.model.Category
+import com.geraud.wallpaperapp.model.SearchedPhotos
 import com.geraud.wallpaperapp.model.TrendingPhotos
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
@@ -68,6 +69,39 @@ object PexelsRepository {
                                 //set value on the main thread
                                 value = trendingPhotos
                                 Log.d(TAG, trendingPhotos.toString())
+                                theJob.complete()
+                            }
+
+                        } catch (e: Throwable) {
+                            Log.d(TAG, e.message.toString())
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //search photo
+//get a list of the trending photos
+    fun searchPhotos(
+        query: String,
+        page_number: Int
+    ): LiveData<SearchedPhotos> {
+        Log.d(TAG, "searching for photos")
+        job = Job()
+        return object : LiveData<SearchedPhotos>() {
+            override fun onActive() { //when this method is called do something
+                super.onActive()
+                job?.let { theJob ->
+                    CoroutineScope(IO + theJob).launch {//get trending photos on the background thread
+                        try {
+                            val searchedPhotos: SearchedPhotos =
+                                RetrofitBuilder.pexelsApiService.searchPhotos(query, page_number)
+
+                            withContext(Main) {
+                                //set value on the main thread
+                                value = searchedPhotos
+                                Log.d(TAG, searchedPhotos.toString())
                                 theJob.complete()
                             }
 

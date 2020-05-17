@@ -1,5 +1,6 @@
 package com.geraud.wallpaperapp.api
 
+import com.geraud.wallpaperapp.model.SearchedPhotos
 import com.geraud.wallpaperapp.model.TrendingPhotos
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -16,5 +17,11 @@ interface PexelsApiService {
         @Query("page") page: Int
     ): TrendingPhotos
 
-
+    //search photos
+    @Headers("Authorization: $API_KEY")
+    @GET("search?per_page=16")
+    suspend fun searchPhotos(
+        @Query("query") query: String,
+        @Query("page") page: Int
+    ): SearchedPhotos
 }

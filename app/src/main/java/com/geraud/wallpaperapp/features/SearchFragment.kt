@@ -5,13 +5,14 @@ import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.geraud.wallpaperapp.R
-import com.geraud.wallpaperapp.adapter.TrendingImagesAdapter
-import com.geraud.wallpaperapp.model.Photo
+import com.geraud.wallpaperapp.adapter.SearchedImagesAdapter
+import com.geraud.wallpaperapp.model.PhotoX
 import com.geraud.wallpaperapp.viewmodel.PexelsViewModel
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection
@@ -20,11 +21,17 @@ import kotlinx.android.synthetic.main.fragment_search.*
 private const val TAG = "SEARCH_FRAGMENT"
 private const val NUMBER_OF_COLUMNS = 2
 
-class SearchFragment : Fragment(), TrendingImagesAdapter.OnItemClickedListener,
+class SearchFragment : Fragment(), SearchedImagesAdapter.OnItemClickedListener,
     SwipyRefreshLayout.OnRefreshListener {
 
     private lateinit var pexelsViewModel: PexelsViewModel
     private lateinit var navController: NavController
+
+    private lateinit var searchedImagesAdapter: SearchedImagesAdapter
+
+    private var queryString: String? = null
+
+    private var page = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,24 +61,75 @@ class SearchFragment : Fragment(), TrendingImagesAdapter.OnItemClickedListener,
         refreshlayout.setOnRefreshListener(this)
 
         //get argument text
-        val query = arguments?.let { SearchFragmentArgs.fromBundle(it).queryString }
-        search_query.hint = query
+        queryString = arguments?.let { SearchFragmentArgs.fromBundle(it).queryString }
+        search_query.hint = queryString
+        search_query.setOnTouchListener(object : View.OnTouchListener {
+
+            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                val DRAWABLE_LEFT = 0
+                val DRAWABLE_TOP = 1
+                val DRAWABLE_RIGHT = 2
+                val DRAWABLE_BOTTOM = 3
+
+                if (event?.action == MotionEvent.ACTION_UP) {
+                    if (event.rawX >= (search_query.right - search_query.compoundDrawables[DRAWABLE_RIGHT].bounds.width())) {
+                        // your action here
+                        Log.d(TAG, "drawable right clicked")
+
+                        //edit text
+                        val query = search_query.text.toString().trim()
+
+                        //get text in search bar and determine if it is empty
+                        if (query.length > 0) {
+                            //search query
+                            queryString = query
+                            page = 1
+                            pexelsViewModel.setSearchQuery(page, queryString.toString())
+
+                            //clear recyclerview adapter
+                            searchedImagesAdapter.clear()
+                        }
+
+                        return true
+                    }
+                }
+
+                return false
+            }
+
+        })
 
         //search recycler adapter
-        val trendingPhotoAdapter = TrendingImagesAdapter(arrayListOf(), view.context, this)
-        search_view.adapter = trendingPhotoAdapter
+        searchedImagesAdapter = SearchedImagesAdapter(arrayListOf(), view.context, this)
+        search_view.adapter = searchedImagesAdapter
         search_view.layoutManager = GridLayoutManager(view.context, NUMBER_OF_COLUMNS)
 
         //query data
+        pexelsViewModel.setSearchQuery(page, queryString.toString())
+        pexelsViewModel.searchedPhotos.observe(viewLifecycleOwner, Observer { searchedPhotos ->
+            Log.d(TAG, "Sucessfully observed searched photos $searchedPhotos")
+
+            //add photos to recyclerview
+            searchedImagesAdapter.photos.addAll(searchedPhotos.photos)
+            searchedImagesAdapter.notifyDataSetChanged()
+
+            if (refreshlayout.isRefreshing)
+                refreshlayout.isRefreshing = false
+
+        })
 
     }
 
-    override fun onTrendingImageCLicked(photo: Photo) {
+    override fun onSearchedImageCLicked(photo: PhotoX) {
         Log.d(TAG, "Image clicked $photo")
     }
 
     override fun onRefresh(direction: SwipyRefreshLayoutDirection?) {
         Log.d(TAG, "onRefresh")
+
+        //query photos
+        page = page.inc()
+        pexelsViewModel.setSearchQuery(page, queryString.toString())
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
