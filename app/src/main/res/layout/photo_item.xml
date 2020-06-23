@@ -21,4 +21,16 @@
         app:sriv_right_bottom_corner_radius="10dip"
         app:sriv_right_top_corner_radius="10dip" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/photo_prev"
+        app:layout_constraintEnd_toEndOf="@+id/photo_prev"
+        app:layout_constraintStart_toStartOf="@+id/photo_prev"
+        app:layout_constraintTop_toTopOf="@+id/photo_prev" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

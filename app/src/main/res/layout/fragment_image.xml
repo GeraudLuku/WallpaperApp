@@ -10,18 +10,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        tools:src="@drawable/pxeils"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/pxeils" />
 
     <ImageView
+        android:id="@+id/share"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:src="@drawable/ic_share"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,12 +31,23 @@
         android:id="@+id/set_wallpaper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="28dp"
-        android:background="@drawable/set_background"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/button_bg"
+        android:padding="8dp"
         android:text="@string/set_wallpaper"
-        android:textColor="@color/white"
-        android:padding="15dp"
+        android:textColor="#B3FFFFFF"
         android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/the_image_will_be_saved_in_your_gallery"
+        android:textColor="#b3ffffff"
+        android:textSize="10sp"
         app:layout_constraintBottom_toTopOf="@+id/cancel_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -46,10 +59,22 @@
         android:layout_marginBottom="16dp"
         android:background="@android:color/transparent"
         android:text="@string/cancel"
-        android:textSize="12sp"
         android:textColor="@color/white"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/wallpaer_view"
+        app:layout_constraintEnd_toEndOf="@+id/wallpaer_view"
+        app:layout_constraintStart_toStartOf="@+id/wallpaer_view"
+        app:layout_constraintTop_toTopOf="@+id/wallpaer_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

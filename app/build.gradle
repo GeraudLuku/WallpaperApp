@@ -69,4 +69,7 @@ dependencies {
     //rounded imageview corners
     implementation 'com.joooonho:selectableroundedimageview:1.0.1'
 
+    //toasty
+    implementation 'com.github.GrenderG:Toasty:1.4.2'
+
 }
