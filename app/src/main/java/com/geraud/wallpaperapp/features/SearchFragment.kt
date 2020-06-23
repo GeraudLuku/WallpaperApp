@@ -122,6 +122,9 @@ class SearchFragment : Fragment(), SearchedImagesAdapter.OnItemClickedListener,
 
     override fun onSearchedImageCLicked(photo: PhotoX) {
         Log.d(TAG, "Image clicked $photo")
+
+        val action = SearchFragmentDirections.actionSearchFragmentToImageFragment(photo.src)
+        navController.navigate(action)
     }
 
     override fun onRefresh(direction: SwipyRefreshLayoutDirection?) {
