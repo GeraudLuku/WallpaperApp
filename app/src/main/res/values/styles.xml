@@ -8,11 +8,18 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="background">@color/white</item>
         <item name="homeAsUpIndicator">@drawable/ic_arrow_back</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
     </style>
 
     <!-- Toolbar text theme. -->
     <style name="TextAppearance.Collapsed" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <!-- splash screen theme. -->
+    <style name="SplashScreenTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen_background</item>
     </style>
 
 </resources>
