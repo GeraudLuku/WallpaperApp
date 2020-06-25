@@ -6,9 +6,10 @@ Wallpyis a wallpaper application developed using Kotlin language
 
 
 # Screenshoots
-<img src="/screenshoots/Screenshot_2020-04-19-20-10-06.png" height="400px"/> <img src="/screenshoots/Screenshot_2020-04-19-20-10-26.png" height="400px"/>
-<img src="/screenshoots/Screenshot_2020-04-19-20-10-31.png" height="400px"/>
-<img src="/screenshoots/Screenshot_2020-04-19-20-10-50.png" height="400px"/>
+<img src="/screenshoots/1.jpeg" height="400px"/> <img src="/screenshoots/2.jpeg" height="400px"/>
+<img src="/screenshoots/3.jpeg" height="400px"/>
+<img src="/screenshoots/4.jpeg" height="400px"/>
+<img src="/screenshoots/5.jpeg" height="400px"/>
 
 # Technologies Used
   - Jetpack navigation
