@@ -86,6 +86,10 @@ class HomeFragment : Fragment(), CategoriesAdapter.OnItemClickedListener,
         })
 
         searchIcon.setOnClickListener {
+
+            //hide soft input keyboard
+            activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+
             //edit text
             val query = editText.text.toString().trim()
 
@@ -96,9 +100,6 @@ class HomeFragment : Fragment(), CategoriesAdapter.OnItemClickedListener,
                 navController.navigate(action)
                 editText.setText("")
             }
-
-            //hide soft input keyboard
-            activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         }
     }
 

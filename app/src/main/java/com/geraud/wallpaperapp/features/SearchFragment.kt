@@ -63,41 +63,25 @@ class SearchFragment : Fragment(), SearchedImagesAdapter.OnItemClickedListener,
         //get argument text
         queryString = arguments?.let { SearchFragmentArgs.fromBundle(it).queryString }
         search_query.hint = queryString
-        search_query.setOnTouchListener(object : View.OnTouchListener {
 
-            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                val DRAWABLE_LEFT = 0
-                val DRAWABLE_TOP = 1
-                val DRAWABLE_RIGHT = 2
-                val DRAWABLE_BOTTOM = 3
+        searchIcon1.setOnClickListener {
+            //hide keyboard
+            activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
 
-                if (event?.action == MotionEvent.ACTION_UP) {
-                    if (event.rawX >= (search_query.right - search_query.compoundDrawables[DRAWABLE_RIGHT].bounds.width())) {
-                        // your action here
-                        Log.d(TAG, "drawable right clicked")
+            //edit text
+            val query = search_query.text.toString().trim()
 
-                        //edit text
-                        val query = search_query.text.toString().trim()
+            //get text in search bar and determine if it is empty
+            if (query.length > 0) {
+                //search query
+                queryString = query
+                page = 1
+                pexelsViewModel.setSearchQuery(page, queryString.toString())
 
-                        //get text in search bar and determine if it is empty
-                        if (query.length > 0) {
-                            //search query
-                            queryString = query
-                            page = 1
-                            pexelsViewModel.setSearchQuery(page, queryString.toString())
-
-                            //clear recyclerview adapter
-                            searchedImagesAdapter.clear()
-                        }
-
-                        return true
-                    }
-                }
-
-                return false
+                //clear recyclerview adapter
+                searchedImagesAdapter.clear()
             }
-
-        })
+        }
 
         //search recycler adapter
         searchedImagesAdapter = SearchedImagesAdapter(arrayListOf(), view.context, this)
