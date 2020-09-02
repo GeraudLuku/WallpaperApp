@@ -3,6 +3,7 @@ package com.geraud.wallpaperapp.features
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -84,40 +85,21 @@ class HomeFragment : Fragment(), CategoriesAdapter.OnItemClickedListener,
 
         })
 
-        //if edit text clicked open search fragment and pass text
-        editText.setOnTouchListener(object : View.OnTouchListener {
+        searchIcon.setOnClickListener {
+            //edit text
+            val query = editText.text.toString().trim()
 
-            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                val DRAWABLE_LEFT = 0
-                val DRAWABLE_TOP = 1
-                val DRAWABLE_RIGHT = 2
-                val DRAWABLE_BOTTOM = 3
-
-                if (event?.action == MotionEvent.ACTION_UP) {
-                    if (event.rawX >= (editText.right - editText.compoundDrawables[DRAWABLE_RIGHT].bounds.width())) {
-                        // your action here
-                        Log.d(TAG, "drawable right clicked")
-
-                        //edit text
-                        val query = editText.text.toString().trim()
-
-                        //get text in search bar and determine if it is empty
-                        if (query.length > 0) {
-                            //navigate to search fragment
-                            val action =
-                                HomeFragmentDirections.actionHomeFragment2ToSearchFragment(query)
-                            navController.navigate(action)
-                            editText.setText("")
-                        }
-
-                        return true
-                    }
-                }
-
-                return false
+            //get text in search bar and determine if it is empty
+            if (query.length > 0) {
+                //navigate to search fragment
+                val action = HomeFragmentDirections.actionHomeFragment2ToSearchFragment(query)
+                navController.navigate(action)
+                editText.setText("")
             }
 
-        })
+            //hide soft input keyboard
+            activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+        }
     }
 
     override fun onCategoryItemCLicked(category: Category) {
