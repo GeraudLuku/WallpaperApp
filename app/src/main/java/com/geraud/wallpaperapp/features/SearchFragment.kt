@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.geraud.wallpaperapp.R
 import com.geraud.wallpaperapp.adapter.SearchedImagesAdapter
-import com.geraud.wallpaperapp.model.PhotoX
+import com.geraud.wallpaperapp.model.Photo
 import com.geraud.wallpaperapp.viewmodel.PexelsViewModel
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection
@@ -104,10 +104,10 @@ class SearchFragment : Fragment(), SearchedImagesAdapter.OnItemClickedListener,
 
     }
 
-    override fun onSearchedImageCLicked(photo: PhotoX) {
+    override fun onSearchedImageCLicked(photo: Photo) {
         Log.d(TAG, "Image clicked $photo")
 
-        val action = SearchFragmentDirections.actionSearchFragmentToImageFragment(photo.src)
+        val action = SearchFragmentDirections.actionSearchFragmentToImageFragment(photo)
         navController.navigate(action)
     }
 

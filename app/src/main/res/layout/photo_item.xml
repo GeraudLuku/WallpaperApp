@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    >
+    android:layout_margin="5dp">
 
     <com.joooonho.SelectableRoundedImageView
         android:id="@+id/photo_prev"
         android:layout_width="match_parent"
         android:layout_height="260dp"
+        android:padding="3dp"
         android:scaleType="centerCrop"
         android:src="@drawable/pxeils"
-        android:layout_margin="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,5 +33,29 @@
         app:layout_constraintEnd_toEndOf="@+id/photo_prev"
         app:layout_constraintStart_toStartOf="@+id/photo_prev"
         app:layout_constraintTop_toTopOf="@+id/photo_prev" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/gradient"
+        app:layout_constraintBottom_toBottomOf="@+id/photo_prev"
+        app:layout_constraintEnd_toEndOf="@+id/photo_prev"
+        app:layout_constraintStart_toStartOf="@+id/photo_prev" />
+
+    <TextView
+        android:id="@+id/text_view_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:drawablePadding="4dp"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:lines="1"
+        android:textColor="@android:color/white"
+        app:drawableStartCompat="@drawable/ic_person"
+        app:layout_constraintBottom_toBottomOf="@+id/photo_prev"
+        app:layout_constraintStart_toStartOf="@+id/photo_prev"
+        tools:text="Luku Geraud" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

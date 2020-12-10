@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore.Images
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +24,10 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.geraud.wallpaperapp.R
-import com.geraud.wallpaperapp.model.Src
+import com.geraud.wallpaperapp.model.Photo
+import com.labters.lottiealertdialoglibrary.ClickListener
+import com.labters.lottiealertdialoglibrary.DialogTypes
+import com.labters.lottiealertdialoglibrary.LottieAlertDialog
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_image.*
 
@@ -32,7 +36,9 @@ class ImageFragment : Fragment() {
 
     private lateinit var navController: NavController
 
-    private var photo: Src? = null
+    private lateinit var lottieAlertDialog: LottieAlertDialog
+
+    private var photo: Photo? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,20 +53,82 @@ class ImageFragment : Fragment() {
 
         navController = findNavController()
 
+
         //get argument
-        photo = arguments?.let { ImageFragmentArgs.fromBundle(it).src }
+        photo = arguments?.let { ImageFragmentArgs.fromBundle(it).photoObject }
 
         set_wallpaper.setOnClickListener {
 
-            set_wallpaper.isEnabled = false
-            set_wallpaper.text = "Wallpaper Set"
+            //show loading dialog
+            //init lottie loading animation
+            lottieAlertDialog = LottieAlertDialog.Builder(activity, DialogTypes.TYPE_LOADING)
+                .setTitle("Loading")
+                .setDescription("Please Wait")
+                .build()
+            lottieAlertDialog.setCancelable(false)
+            lottieAlertDialog.show()
 
-            //set image as wallpaper
-            val bitmap = wallpaer_view.drawable.toBitmap()
-            val task = SetWallpaperTask(it.context, bitmap)
-            task.execute(true)
+            Handler().postDelayed(Runnable {
+                try {
 
-            Toasty.success(it.context, "Wallpaper Set", Toast.LENGTH_SHORT, true).show();
+                    //set image as wallpaper
+                    val bitmap = wallpaer_view.drawable.toBitmap()
+                    val task = SetWallpaperTask(it.context, bitmap)
+                    task.execute(true)
+
+                    set_wallpaper.isEnabled = false
+                    set_wallpaper.text = "Wallpaper Set"
+
+                    //if image was set successfully as wallpaper, stop loading animation and show another alert dialog
+                    lottieAlertDialog.changeDialog(
+                        LottieAlertDialog.Builder(activity, DialogTypes.TYPE_SUCCESS)
+                            .setTitle("Say thanks to ${photo?.photographer}")
+                            .setDescription("Creators love hearing from you and seeing how you’ve used their photos. Show your appreciation by donating, tweeting, and following!")
+                            .setPositiveText("Follow")
+                            .setPositiveListener(object : ClickListener {
+                                override fun onClick(dialog: LottieAlertDialog) {
+                                    //start intent to photographer url
+                                    val browserIntent = Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse(photo?.photographerUrl)
+                                    )
+                                    startActivity(browserIntent)
+
+                                    //dismiss the dialog
+                                    dialog.dismiss()
+                                }
+                            })
+                            .setNegativeText("View Image")
+                            .setNegativeListener(object : ClickListener {
+                                override fun onClick(dialog: LottieAlertDialog) {
+                                    //start intent to image url
+                                    val browserIntent = Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse(photo?.url)
+                                    )
+                                    startActivity(browserIntent)
+
+                                    //dismiss the dialog
+                                    dialog.dismiss()
+                                }
+                            })
+                    )
+
+                } catch (e: Exception) {
+                    //show error dialog
+                    lottieAlertDialog.changeDialog(
+                        LottieAlertDialog.Builder(activity, DialogTypes.TYPE_ERROR)
+                            .setTitle("Error")
+                            .setDescription("Oops! could not set wallpaper try again.")
+                            .setPositiveText("Okay")
+                            .setPositiveListener(object : ClickListener {
+                                override fun onClick(dialog: LottieAlertDialog) {
+                                    dialog.dismiss()
+                                }
+                            })
+                    )
+                }
+            }, 2000)
 
         }
 
@@ -107,7 +175,7 @@ class ImageFragment : Fragment() {
         super.onStart()
         if (photo != null) {
             //load image on image view
-            Glide.with(this).load(photo?.portrait)
+            Glide.with(this).load(photo?.src?.portrait)
                 .listener(object : RequestListener<Drawable> {
                     override fun onLoadFailed(
                         e: GlideException?,

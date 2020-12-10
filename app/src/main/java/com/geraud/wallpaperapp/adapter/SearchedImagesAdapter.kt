@@ -12,12 +12,12 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.geraud.wallpaperapp.R
-import com.geraud.wallpaperapp.model.PhotoX
+import com.geraud.wallpaperapp.model.Photo
 import kotlinx.android.synthetic.main.photo_item.view.*
 
 
 class SearchedImagesAdapter(
-    var photos: ArrayList<PhotoX>,
+    var photos: ArrayList<Photo>,
     private val context: Context,
     private var clickListener: OnItemClickedListener
 ) :
@@ -39,8 +39,9 @@ class SearchedImagesAdapter(
     class SearchedImagesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val imageView = view.photo_prev
         private val progressBar = view.progressBar
+        private val username = view.text_view_username
 
-        fun bind(photo: PhotoX, context: Context, action: OnItemClickedListener) {
+        fun bind(photo: Photo, context: Context, action: OnItemClickedListener) {
 
             Glide.with(context).asBitmap().load(photo.src.portrait).listener(object :
                 RequestListener<Bitmap> {
@@ -70,6 +71,9 @@ class SearchedImagesAdapter(
                 action.onSearchedImageCLicked(photo)
             }
 
+            //set user name on photo
+            username.text = photo.photographer
+
         }
     }
 
@@ -84,6 +88,6 @@ class SearchedImagesAdapter(
 
 
     interface OnItemClickedListener {
-        fun onSearchedImageCLicked(photo: PhotoX)
+        fun onSearchedImageCLicked(photo: Photo)
     }
 }

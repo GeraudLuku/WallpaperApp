@@ -2,6 +2,7 @@ package com.geraud.wallpaperapp.model
 
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Photo(
     @SerializedName("height")
@@ -20,4 +21,4 @@ data class Photo(
     var url: String,
     @SerializedName("width")
     var width: Int
-)
+):Serializable

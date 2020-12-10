@@ -34,7 +34,7 @@
         android:label="fragment_image"
         tools:layout="@layout/fragment_image" >
         <argument
-            android:name="src"
-            app:argType="com.geraud.wallpaperapp.model.Src" />
+            android:name="photoObject"
+            app:argType="com.geraud.wallpaperapp.model.Photo" />
     </fragment>
 </navigation>

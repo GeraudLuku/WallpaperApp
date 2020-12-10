@@ -2,8 +2,10 @@ package com.geraud.wallpaperapp.features
 
 import android.os.Bundle
 import android.util.Log
-import android.view.*
-import android.view.inputmethod.EditorInfo
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -113,7 +115,7 @@ class HomeFragment : Fragment(), CategoriesAdapter.OnItemClickedListener,
     override fun onTrendingImageCLicked(photo: Photo) {
         Log.d(TAG, "photo clicked { $photo }")
 
-        val action = HomeFragmentDirections.actionHomeFragment2ToImageFragment(photo.src)
+        val action = HomeFragmentDirections.actionHomeFragment2ToImageFragment(photo)
         navController.navigate(action)
     }
 

@@ -38,6 +38,7 @@ class TrendingImagesAdapter(
     class TrendingImagesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val imageView = view.photo_prev
         private val progressBar = view.progressBar
+        private val username = view.text_view_username
 
         fun bind(photo: Photo, context: Context, action: OnItemClickedListener) {
 
@@ -70,6 +71,11 @@ class TrendingImagesAdapter(
             imageView.setOnClickListener {
                 action.onTrendingImageCLicked(photo)
             }
+
+            //set user name on photo
+            username.text = photo.photographer
+
+
 
         }
     }

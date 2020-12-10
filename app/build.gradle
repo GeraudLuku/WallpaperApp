@@ -72,4 +72,8 @@ dependencies {
     //toasty
     implementation 'com.github.GrenderG:Toasty:1.4.2'
 
+    //lottie alert dailog library
+    implementation 'com.airbnb.android:lottie:3.5.0'
+    implementation 'com.github.mayuce:LottieAlertDialog:1.1'
+
 }
