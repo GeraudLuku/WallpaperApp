@@ -18,6 +18,9 @@ Wallpyis a wallpaper application developed using Kotlin language. **NB: WE ARE N
   - Retrofit
   - Pexels API
 
+<a href="https://play.google.com/store/apps/details?id=com.geraud.wallpaperapp">
+<img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" height="50px"/></a>
+
 ## Contributing
 Looking to contribute something?
 Start by forking the project then make a change in the code and watch your pull request be accepted and merged
