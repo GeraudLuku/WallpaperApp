@@ -4,6 +4,10 @@
 
 Wallpyis a wallpaper application developed using Kotlin language. **NB: WE ARE NOW LIVE ON PLAYSTORE!!**
 
+# Download
+<a href="https://play.google.com/store/apps/details?id=com.geraud.wallpaperapp">
+<img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" height="50px"/></a>
+
 
 # Screenshoots
 <img src="/screenshoots/1.jpeg" height="400px"/> <img src="/screenshoots/2.jpeg" height="400px"/>
@@ -17,9 +21,6 @@ Wallpyis a wallpaper application developed using Kotlin language. **NB: WE ARE N
   - Coroutines
   - Retrofit
   - Pexels API
-
-<a href="https://play.google.com/store/apps/details?id=com.geraud.wallpaperapp">
-<img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" height="50px"/></a>
 
 ## Contributing
 Looking to contribute something?
