@@ -2,7 +2,7 @@
 
 <img src="/wallpy.png" height="200px"/> <br>
 
-Wallpyis a wallpaper application developed using Kotlin language
+Wallpyis a wallpaper application developed using Kotlin language. **NB: WE ARE NOW LIVE ON PLAYSTORE!!**
 
 
 # Screenshoots
